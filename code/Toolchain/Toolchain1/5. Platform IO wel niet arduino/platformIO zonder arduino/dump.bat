@@ -1,0 +1,1 @@
+C:\Users\mikea\.platformio\packages\toolchain-atmelavr\avr\bin\objdump.exe -S -d ./.pio/build/uno/firmware.elf > firmeware.s

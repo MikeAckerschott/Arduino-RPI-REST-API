@@ -1,4 +1,4 @@
-@startuml
+@startuml EPD
 
 state "Sein op groen" as SeinOpGroen
 state "Sein op oranje" as SeinOpOranje
