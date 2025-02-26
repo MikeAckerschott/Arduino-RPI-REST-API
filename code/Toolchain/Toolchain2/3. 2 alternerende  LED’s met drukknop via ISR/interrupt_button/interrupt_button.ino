@@ -4,7 +4,6 @@
 #define LED1 PB0
 #define LED2 PB1
 
-//Define what should happen when Low to High transition is detected 
 ISR(INT0_vect)
 {
     //Only PD2 is configured as input, so no need to check which pin triggered the interrupt

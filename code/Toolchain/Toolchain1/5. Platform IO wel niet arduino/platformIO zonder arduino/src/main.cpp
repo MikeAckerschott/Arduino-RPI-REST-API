@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include <avr/interrupt.h>
 
 #define MS_DELAY_1HZ 500
@@ -7,11 +6,24 @@
 volatile uint8_t timer_flag = 0;
 uint16_t blink_delay = MS_DELAY_1HZ;
 
+int8_t calculateOCR0A(uint32_t clockspeed, uint32_t prescaler, uint32_t frequency) {
+    return clockspeed / (prescaler * frequency) - 1;
+}
+
 void timer0_init() {
+    // CTC on timer 0
     TCCR0A |= (1 << WGM01);
-    OCR0A = 249;
+
+    // Set prescaler to 1024
+    TCCR0B |= (1 << CS02) | (1 << CS00);
+
+    // Trigger interrupt once every MS
+    OCR0A = calculateOCR0A(16000000, 1024, 1000);
+
+    // Enable Timer0 compare interrupt
     TIMSK0 |= (1 << OCIE0A);
-    TCCR0B |= (1 << CS01) | (1 << CS00);
+
+    // Enable global interrupts
     sei();
 }
 
@@ -31,7 +43,7 @@ ISR(TIMER0_COMPA_vect) {
 void setup_pins() {
     DDRB |= (1 << DDB5) | (1 << DDB4);
     DDRD &= ~(1 << DDD4);
-    PORTD |= (1 << PORTD4);
+    // PORTD |= (1 << PORTD4);
 }
 
 int main(void) {

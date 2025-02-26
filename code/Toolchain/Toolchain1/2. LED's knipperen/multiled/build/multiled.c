@@ -1,16 +1,29 @@
 #include <avr/interrupt.h>
 
-#define MS_DELAY_PORTB5 500
-#define MS_DELAY_PORTB4 1000
+#define MS_DELAY_PORTB5 1000
+#define MS_DELAY_PORTB4 2000
 
 uint8_t timer_flag_PORTB5 = 0;
 uint8_t timer_flag_PORTB4 = 0;
 
+int8_t calculateOCR0A(uint32_t clockspeed, uint32_t prescaler, uint32_t frequency) {
+    return clockspeed / (prescaler * frequency) - 1;
+}
+
 void timer0_init() {
+    // CTC on timer 0
     TCCR0A |= (1 << WGM01);
-    OCR0A = 249;
+
+    // Set prescaler to 1024
+    TCCR0B |= (1 << CS02) | (1 << CS00);
+
+    // Trigger interrupt once every MS
+    OCR0A = calculateOCR0A(16000000, 1024, 1000);
+
+    // Enable Timer0 compare interrupt
     TIMSK0 |= (1 << OCIE0A);
-    TCCR0B |= (1 << CS01) | (1 << CS00);
+
+    // Enable global interrupts
     sei();
 }
 

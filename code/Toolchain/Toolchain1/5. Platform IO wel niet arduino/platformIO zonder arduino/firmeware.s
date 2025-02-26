@@ -44,7 +44,7 @@ Disassembly of section .text:
   74:	11 e0       	ldi	r17, 0x01	; 1
   76:	a0 e0       	ldi	r26, 0x00	; 0
   78:	b1 e0       	ldi	r27, 0x01	; 1
-  7a:	ee e5       	ldi	r30, 0x5E	; 94
+  7a:	ec e5       	ldi	r30, 0x5C	; 92
   7c:	f1 e0       	ldi	r31, 0x01	; 1
   7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
   80:	05 90       	lpm	r0, Z+
@@ -67,7 +67,7 @@ Disassembly of section .text:
   96:	b2 07       	cpc	r27, r18
   98:	e1 f7       	brne	.-8      	; 0x92 <.do_clear_bss_loop>
   9a:	0e 94 7c 00 	call	0xf8	; 0xf8 <main>
-  9e:	0c 94 ad 00 	jmp	0x15a	; 0x15a <_exit>
+  9e:	0c 94 ac 00 	jmp	0x158	; 0x158 <_exit>
 
 000000a2 <__bad_interrupt>:
   a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -111,46 +111,45 @@ Disassembly of section .text:
   fa:	80 63       	ori	r24, 0x30	; 48
   fc:	84 b9       	out	0x04, r24	; 4
   fe:	54 98       	cbi	0x0a, 4	; 10
- 100:	5c 9a       	sbi	0x0b, 4	; 11
- 102:	84 b5       	in	r24, 0x24	; 36
- 104:	82 60       	ori	r24, 0x02	; 2
- 106:	84 bd       	out	0x24, r24	; 36
- 108:	89 ef       	ldi	r24, 0xF9	; 249
- 10a:	87 bd       	out	0x27, r24	; 39
- 10c:	80 91 6e 00 	lds	r24, 0x006E	; 0x80006e <__TEXT_REGION_LENGTH__+0x7e006e>
- 110:	82 60       	ori	r24, 0x02	; 2
- 112:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <__TEXT_REGION_LENGTH__+0x7e006e>
- 116:	85 b5       	in	r24, 0x25	; 37
- 118:	83 60       	ori	r24, 0x03	; 3
- 11a:	85 bd       	out	0x25, r24	; 37
- 11c:	78 94       	sei
- 11e:	44 ef       	ldi	r20, 0xF4	; 244
- 120:	51 e0       	ldi	r21, 0x01	; 1
- 122:	62 e3       	ldi	r22, 0x32	; 50
- 124:	70 e0       	ldi	r23, 0x00	; 0
- 126:	20 e2       	ldi	r18, 0x20	; 32
- 128:	90 e1       	ldi	r25, 0x10	; 16
- 12a:	4c 99       	sbic	0x09, 4	; 9
- 12c:	11 c0       	rjmp	.+34     	; 0x150 <main+0x58>
- 12e:	70 93 01 01 	sts	0x0101, r23	; 0x800101 <__data_start+0x1>
- 132:	60 93 00 01 	sts	0x0100, r22	; 0x800100 <__data_start>
- 136:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <timer_flag>
- 13a:	88 23       	and	r24, r24
- 13c:	b1 f3       	breq	.-20     	; 0x12a <main+0x32>
- 13e:	85 b1       	in	r24, 0x05	; 5
- 140:	82 27       	eor	r24, r18
- 142:	85 b9       	out	0x05, r24	; 5
- 144:	85 b1       	in	r24, 0x05	; 5
- 146:	89 27       	eor	r24, r25
- 148:	85 b9       	out	0x05, r24	; 5
- 14a:	10 92 04 01 	sts	0x0104, r1	; 0x800104 <timer_flag>
- 14e:	ed cf       	rjmp	.-38     	; 0x12a <main+0x32>
- 150:	50 93 01 01 	sts	0x0101, r21	; 0x800101 <__data_start+0x1>
- 154:	40 93 00 01 	sts	0x0100, r20	; 0x800100 <__data_start>
- 158:	ee cf       	rjmp	.-36     	; 0x136 <main+0x3e>
+ 100:	84 b5       	in	r24, 0x24	; 36
+ 102:	82 60       	ori	r24, 0x02	; 2
+ 104:	84 bd       	out	0x24, r24	; 36
+ 106:	85 b5       	in	r24, 0x25	; 37
+ 108:	85 60       	ori	r24, 0x05	; 5
+ 10a:	85 bd       	out	0x25, r24	; 37
+ 10c:	8e e0       	ldi	r24, 0x0E	; 14
+ 10e:	87 bd       	out	0x27, r24	; 39
+ 110:	80 91 6e 00 	lds	r24, 0x006E	; 0x80006e <__TEXT_REGION_LENGTH__+0x7e006e>
+ 114:	82 60       	ori	r24, 0x02	; 2
+ 116:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <__TEXT_REGION_LENGTH__+0x7e006e>
+ 11a:	78 94       	sei
+ 11c:	44 ef       	ldi	r20, 0xF4	; 244
+ 11e:	51 e0       	ldi	r21, 0x01	; 1
+ 120:	62 e3       	ldi	r22, 0x32	; 50
+ 122:	70 e0       	ldi	r23, 0x00	; 0
+ 124:	20 e2       	ldi	r18, 0x20	; 32
+ 126:	90 e1       	ldi	r25, 0x10	; 16
+ 128:	4c 99       	sbic	0x09, 4	; 9
+ 12a:	11 c0       	rjmp	.+34     	; 0x14e <main+0x56>
+ 12c:	70 93 01 01 	sts	0x0101, r23	; 0x800101 <__data_start+0x1>
+ 130:	60 93 00 01 	sts	0x0100, r22	; 0x800100 <__data_start>
+ 134:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <timer_flag>
+ 138:	88 23       	and	r24, r24
+ 13a:	b1 f3       	breq	.-20     	; 0x128 <main+0x30>
+ 13c:	85 b1       	in	r24, 0x05	; 5
+ 13e:	82 27       	eor	r24, r18
+ 140:	85 b9       	out	0x05, r24	; 5
+ 142:	85 b1       	in	r24, 0x05	; 5
+ 144:	89 27       	eor	r24, r25
+ 146:	85 b9       	out	0x05, r24	; 5
+ 148:	10 92 04 01 	sts	0x0104, r1	; 0x800104 <timer_flag>
+ 14c:	ed cf       	rjmp	.-38     	; 0x128 <main+0x30>
+ 14e:	50 93 01 01 	sts	0x0101, r21	; 0x800101 <__data_start+0x1>
+ 152:	40 93 00 01 	sts	0x0100, r20	; 0x800100 <__data_start>
+ 156:	ee cf       	rjmp	.-36     	; 0x134 <main+0x3c>
 
-0000015a <_exit>:
- 15a:	f8 94       	cli
+00000158 <_exit>:
+ 158:	f8 94       	cli
 
-0000015c <__stop_program>:
- 15c:	ff cf       	rjmp	.-2      	; 0x15c <__stop_program>
+0000015a <__stop_program>:
+ 15a:	ff cf       	rjmp	.-2      	; 0x15a <__stop_program>

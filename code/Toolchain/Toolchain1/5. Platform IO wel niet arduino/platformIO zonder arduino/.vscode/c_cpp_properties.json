@@ -10,13 +10,6 @@
             "includePath": [
                 "C:/Users/mikea/Documents/IoT-techniek_svn/code/Toolchain/Toolchain1/5. Platform IO wel niet arduino/platformIO zonder arduino/include",
                 "C:/Users/mikea/Documents/IoT-techniek_svn/code/Toolchain/Toolchain1/5. Platform IO wel niet arduino/platformIO zonder arduino/src",
-                "C:/Users/mikea/.platformio/packages/framework-arduino-avr/cores/arduino",
-                "C:/Users/mikea/.platformio/packages/framework-arduino-avr/variants/standard",
-                "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
-                "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/HID/src",
-                "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                 ""
             ],
             "browse": {
@@ -24,22 +17,13 @@
                 "path": [
                     "C:/Users/mikea/Documents/IoT-techniek_svn/code/Toolchain/Toolchain1/5. Platform IO wel niet arduino/platformIO zonder arduino/include",
                     "C:/Users/mikea/Documents/IoT-techniek_svn/code/Toolchain/Toolchain1/5. Platform IO wel niet arduino/platformIO zonder arduino/src",
-                    "C:/Users/mikea/.platformio/packages/framework-arduino-avr/cores/arduino",
-                    "C:/Users/mikea/.platformio/packages/framework-arduino-avr/variants/standard",
-                    "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
-                    "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/HID/src",
-                    "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                    "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                    "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                     ""
                 ]
             },
             "defines": [
+                "F_CPU=16000000L",
                 "PLATFORMIO=60117",
                 "ARDUINO_AVR_UNO",
-                "F_CPU=16000000L",
-                "ARDUINO_ARCH_AVR",
-                "ARDUINO=10808",
                 "__AVR_ATmega328P__",
                 ""
             ],

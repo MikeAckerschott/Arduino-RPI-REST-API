@@ -6,11 +6,25 @@
 volatile uint8_t timer_flag = 0;
 uint16_t blink_delay = MS_DELAY_1HZ;
 
+// calculating this value is explained in the datasheet 14.7.2
+int8_t calculateOCR0A(uint32_t clockspeed, uint32_t prescaler, uint32_t frequency) {
+    return clockspeed / (prescaler * frequency) - 1;
+}
+
 void timer0_init() {
+    // CTC on timer 0. datasheet 14.7.2
     TCCR0A |= (1 << WGM01);
-    OCR0A = 249;
+
+    // Set prescaler to 1024. datasheet table 14-9
+    TCCR0B |= (1 << CS02) | (1 << CS00);
+
+    // Trigger interrupt once every MS
+    OCR0A = calculateOCR0A(16000000, 1024, 1000);
+
+    // Enable Timer0 compare interrupt. datasheet 14.9.6
     TIMSK0 |= (1 << OCIE0A);
-    TCCR0B |= (1 << CS01) | (1 << CS00);
+
+    // Enable global interrupts
     sei();
 }
 
@@ -22,6 +36,7 @@ void handle_timer(uint16_t *count, uint8_t *flag, uint16_t delay) {
     }
 }
 
+// calls an interrupt when TCNT0 is equal or greater than OCR0A and resets TCNT0 (CTC mode)
 ISR(TIMER0_COMPA_vect) {
     static uint16_t count = 0;
     handle_timer(&count, &timer_flag, blink_delay);
@@ -30,7 +45,7 @@ ISR(TIMER0_COMPA_vect) {
 void setup_pins() {
     DDRB |= (1 << DDB5) | (1 << DDB4);
     DDRD &= ~(1 << DDD4);
-    PORTD |= (1 << PORTD4);
+    // PORTD |= (1 << PORTD4);
 }
 
 int main(void) {

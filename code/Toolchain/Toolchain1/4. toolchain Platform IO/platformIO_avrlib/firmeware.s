@@ -115,14 +115,14 @@ Disassembly of section .text:
  102:	84 b5       	in	r24, 0x24	; 36
  104:	82 60       	ori	r24, 0x02	; 2
  106:	84 bd       	out	0x24, r24	; 36
- 108:	89 ef       	ldi	r24, 0xF9	; 249
- 10a:	87 bd       	out	0x27, r24	; 39
- 10c:	80 91 6e 00 	lds	r24, 0x006E	; 0x80006e <__TEXT_REGION_LENGTH__+0x7e006e>
- 110:	82 60       	ori	r24, 0x02	; 2
- 112:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <__TEXT_REGION_LENGTH__+0x7e006e>
- 116:	85 b5       	in	r24, 0x25	; 37
- 118:	83 60       	ori	r24, 0x03	; 3
- 11a:	85 bd       	out	0x25, r24	; 37
+ 108:	85 b5       	in	r24, 0x25	; 37
+ 10a:	85 60       	ori	r24, 0x05	; 5
+ 10c:	85 bd       	out	0x25, r24	; 37
+ 10e:	8e e0       	ldi	r24, 0x0E	; 14
+ 110:	87 bd       	out	0x27, r24	; 39
+ 112:	80 91 6e 00 	lds	r24, 0x006E	; 0x80006e <__TEXT_REGION_LENGTH__+0x7e006e>
+ 116:	82 60       	ori	r24, 0x02	; 2
+ 118:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <__TEXT_REGION_LENGTH__+0x7e006e>
  11c:	78 94       	sei
  11e:	44 ef       	ldi	r20, 0xF4	; 244
  120:	51 e0       	ldi	r21, 0x01	; 1
