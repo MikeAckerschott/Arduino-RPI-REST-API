@@ -1,8 +1,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define LED1 PB0
-#define LED2 PB1
+#define LED1 PB5
+#define LED2 PB4
 
 // Define what should happen when Low to High transition is detected 
 ISR(INT0_vect)

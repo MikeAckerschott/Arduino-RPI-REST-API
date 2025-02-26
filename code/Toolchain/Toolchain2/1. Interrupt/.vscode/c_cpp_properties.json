@@ -8,8 +8,8 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Toolchain/Toolchain2/Opdracht 1. interrupt/include",
-                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Toolchain/Toolchain2/Opdracht 1. interrupt/src",
+                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Toolchain/Toolchain2/1. Interrupt/include",
+                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Toolchain/Toolchain2/1. Interrupt/src",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/variants/standard",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
@@ -22,8 +22,8 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Toolchain/Toolchain2/Opdracht 1. interrupt/include",
-                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Toolchain/Toolchain2/Opdracht 1. interrupt/src",
+                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Toolchain/Toolchain2/1. Interrupt/include",
+                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Toolchain/Toolchain2/1. Interrupt/src",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/variants/standard",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
