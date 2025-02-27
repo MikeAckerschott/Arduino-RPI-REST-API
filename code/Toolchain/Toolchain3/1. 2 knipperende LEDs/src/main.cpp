@@ -6,11 +6,20 @@
 volatile uint8_t timer_flag = 0;
 uint16_t blink_delay = MS_DELAY_1HZ;
 
+// datasheet 11.7.2
+int8_t calculateOCR0A(uint32_t clockspeed, uint32_t prescaler, uint32_t frequency) {
+  return clockspeed / (prescaler * frequency) - 1;
+}
+
 void timer0_init() {
-  TCCR0A |= (1 << WGM01); // Set CTC mode
-  OCR0A = 124; // Set compare value for 1ms interrupt
-  TIMSK |= (1 << OCIE0A); // Enable compare match interrupt
-  TCCR0B |= (1 << CS01) | (1 << CS00); // Set prescaler to 64 and start timer
+  TCCR0A |= (1 << WGM01); // Set CTC mode. 11.7.2 Data sheet
+
+  OCR0A = calculateOCR0A(8000000, 64, 1000); // Set compare value for 1ms interrupt
+
+  TIMSK |= (1 << OCIE0A); // Enable compare match interrupt. 11.9.7 Data sheet
+
+  TCCR0B |= (1 << CS01) | (1 << CS00); // Set prescaler to 64 and start timer. Table 11-6 Data sheet
+
   sei(); // Enable global interrupts
 }
 

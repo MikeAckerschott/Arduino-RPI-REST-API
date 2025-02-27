@@ -1,8 +1,11 @@
 #define F_CPU 16000000UL  // 16 MHz for Arduino Nano
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
+#include <avr/sleep.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+#include <avr/sleep.h>
 
 // Define baud rate
 #define USART_BAUDRATE 9600   
@@ -12,51 +15,39 @@ volatile unsigned char value;
 volatile bool new_data_received = false;
 
 ISR(USART_RX_vect){
-  value = UDR0;             // read UART register into value
-  UDR0 = value;             // echo the received character
-  new_data_received = true; // set flag to indicate new data received
+  value = UDR0;             // read UART register into value. 19.7.1
+  USART_SendByte(value);  // send value back to terminal
 }
 
+// Datasheet 19.5
 void USART_Init(void){
   // Set baud rate
   UBRR0H = (BAUD_PRESCALE >> 8); 
   UBRR0L = BAUD_PRESCALE; 
 
-  // Enable receiver and transmitter and receive complete interrupt 
-  UCSR0B = (1 << RXEN0) | (1 << TXEN0) | (1 << RXCIE0);
+  // Enable receiver and transmitter 
+  UCSR0B = (1 << RXEN0) | (1 << TXEN0)
+
+  // Enable receive complete interrupt  19.7.3 
+  UCSR0B |= (1 << RXCIE0);
 }
 
 void USART_SendByte(uint8_t u8Data){
-  // Wait until last byte has been transmitted
+  // Wait until last byte has been transmitted. 19.6.1
   while((UCSR0A & (1 << UDRE0)) == 0);
 
-  // Transmit data
+  // Transmit data. 19.6.1
   UDR0 = u8Data;
-}
-
-uint8_t USART_ReceiveByte(){
-  while((UCSR0A & (1 << RXC0)) == 0);
-  return UDR0;
-}
-
-void Led_init(void){
-  // Set PORTB as output, all off
-  DDRB = 0xFF;       
-  PORTB = 0xFF;        
 }
 
 int main(void){
   USART_Init();  // Initialise USART
   sei();         // enable all interrupts
-  Led_init();    // init LEDs for testing
   value = 'A';   // initial value
-  PORTB = ~value; // 0 = LED on
   
-  for(;;){    // Repeat indefinitely
-    if (new_data_received) {
-      USART_SendByte(value);  // send value 
-      new_data_received = false; // reset flag
-    }
-    _delay_ms(250);         // delay to stop screen cluttering up    
+  while (1) {
+    set_sleep_mode(SLEEP_MODE_IDLE);
+    sleep_mode();
   }
+  
 }
