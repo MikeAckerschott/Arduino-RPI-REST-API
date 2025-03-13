@@ -8,11 +8,11 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "C:/Users/mikea/Documents/PlatformIO/Projects/One Wire DHT11/include",
-                "C:/Users/mikea/Documents/PlatformIO/Projects/One Wire DHT11/src",
+                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/One Wire/One Wire DHT11/include",
+                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/One Wire/One Wire DHT11/src",
+                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/One Wire/One Wire DHT11/lib/DHT11-main/src",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/variants/standard",
-                "C:/Users/mikea/Documents/PlatformIO/Projects/One Wire DHT11/lib/DHT11-main/src",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
@@ -23,11 +23,11 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "C:/Users/mikea/Documents/PlatformIO/Projects/One Wire DHT11/include",
-                    "C:/Users/mikea/Documents/PlatformIO/Projects/One Wire DHT11/src",
+                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/One Wire/One Wire DHT11/include",
+                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/One Wire/One Wire DHT11/src",
+                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/One Wire/One Wire DHT11/lib/DHT11-main/src",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/variants/standard",
-                    "C:/Users/mikea/Documents/PlatformIO/Projects/One Wire DHT11/lib/DHT11-main/src",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
