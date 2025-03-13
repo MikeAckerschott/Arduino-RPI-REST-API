@@ -206,7 +206,7 @@ enum CAN_CLKOUT {
     CLKOUT_DIV8 = 0x3,
 };
 
-class MCP2515
+class                                      MCP2515
 {
     public:
         enum ERROR {
