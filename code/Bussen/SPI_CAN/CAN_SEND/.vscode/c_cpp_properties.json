@@ -8,9 +8,9 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/SPI & CAN/CAN_SEND/include",
-                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/SPI & CAN/CAN_SEND/src",
-                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/SPI & CAN/CAN_SEND/.pio/libdeps/nanoatmega328/autowp-mcp2515",
+                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/SPI_CAN/CAN_SEND/include",
+                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/SPI_CAN/CAN_SEND/src",
+                "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/SPI_CAN/CAN_SEND/.pio/libdeps/nanoatmega328/autowp-mcp2515",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
@@ -23,9 +23,9 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/SPI & CAN/CAN_SEND/include",
-                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/SPI & CAN/CAN_SEND/src",
-                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/SPI & CAN/CAN_SEND/.pio/libdeps/nanoatmega328/autowp-mcp2515",
+                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/SPI_CAN/CAN_SEND/include",
+                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/SPI_CAN/CAN_SEND/src",
+                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/Bussen/SPI_CAN/CAN_SEND/.pio/libdeps/nanoatmega328/autowp-mcp2515",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
