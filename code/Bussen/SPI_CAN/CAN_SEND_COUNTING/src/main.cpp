@@ -27,7 +27,16 @@ void setup()
   canMsg1.data[6] = ' ';
   canMsg1.data[7] = ' ';
 
-  canMsg2 = canMsg1;
+  canMsg2.can_id = 0x0F7;
+  canMsg2.can_dlc = 8;
+  canMsg2.data[0] = 'z';
+  canMsg2.data[1] = 'e';
+  canMsg2.data[2] = 'n';
+  canMsg2.data[3] = 'd';
+  canMsg2.data[4] = ' ';
+  canMsg2.data[5] = ' ';
+  canMsg2.data[6] = ' ';
+  canMsg2.data[7] = ' ';
 
   int result = 0;
 
@@ -68,7 +77,8 @@ void setup()
 void loop()
 {
   String countStr = String(count);
-  String countStr2 = String(count + 1);
+  count++;
+  String countStr2 = String(count);
   for (int i = 0; i < 3 && i < countStr.length(); i++) // parse it as ASCII. only 3 bytes left in the canframe. problem when > 999
   {
     int iterator = 5 + i;
@@ -85,7 +95,7 @@ void loop()
   mcp2515.sendMessage(&canMsg2);
 
   Serial.println("Messages sent");
-  count += 2;
+  count++;
 
   delay(100);
 }
