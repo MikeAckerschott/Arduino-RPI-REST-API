@@ -2,7 +2,7 @@
 #include <mcp2515.h>
 
 struct can_frame canMsg1;
-// struct can_frame canMsg2;
+struct can_frame canMsg2;
 MCP2515 mcp2515(10);
 int count = 0;
 
@@ -26,6 +26,8 @@ void setup()
   canMsg1.data[5] = ' ';
   canMsg1.data[6] = ' ';
   canMsg1.data[7] = ' ';
+
+  canMsg2 = canMsg1;
 
   int result = 0;
 
@@ -66,18 +68,24 @@ void setup()
 void loop()
 {
   String countStr = String(count);
-  for(int i = 0; i < 3 && i < countStr.length(); i++) //parse it as ASCII. only 3 bytes left in the canframe. problem when > 999
+  String countStr2 = String(count + 1);
+  for (int i = 0; i < 3 && i < countStr.length(); i++) // parse it as ASCII. only 3 bytes left in the canframe. problem when > 999
   {
     int iterator = 5 + i;
     canMsg1.data[iterator] = countStr[i];
   }
 
-  while (mcp2515.sendMessage(&canMsg1) != MCP2515::ERROR_OK)
+  for (int i = 0; i < 3 && i < countStr2.length(); i++) // parse it as ASCII. only 3 bytes left in the canframe. problem when > 999
   {
-    Serial.println("Error sending message");
+    int iterator = 5 + i;
+    canMsg2.data[iterator] = countStr2[i];
   }
+
+  mcp2515.sendMessage(&canMsg1);
+  mcp2515.sendMessage(&canMsg2);
+
   Serial.println("Messages sent");
-  count++;
+  count += 2;
 
   delay(100);
 }
