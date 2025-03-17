@@ -2,12 +2,21 @@
 #include <mcp2515.h>
 
 struct can_frame canMsg1;
-struct can_frame canMsg2;
 MCP2515 mcp2515(10);
-int count = 0;
+int32_t count = 0;
+
+//union to split int32 into 4 bytes
+typedef union
+{
+  int32_t i32;
+  uint8_t u8[4];
+} union_32;
+
+union_32 u32_1;
 
 void setup()
 {
+  u32_1.i32 = 0;
 
   Serial.begin(9600);
 
@@ -27,19 +36,7 @@ void setup()
   canMsg1.data[6] = ' ';
   canMsg1.data[7] = ' ';
 
-  canMsg2.can_id = 0x0F7;
-  canMsg2.can_dlc = 8;
-  canMsg2.data[0] = 'z';
-  canMsg2.data[1] = 'e';
-  canMsg2.data[2] = 'n';
-  canMsg2.data[3] = 'd';
-  canMsg2.data[4] = ' ';
-  canMsg2.data[5] = ' ';
-  canMsg2.data[6] = ' ';
-  canMsg2.data[7] = ' ';
-
   int result = 0;
-
   result = mcp2515.reset();
 
   if (result == MCP2515::ERROR_OK)
@@ -74,28 +71,23 @@ void setup()
   }
 }
 
+void updateCanMsg()
+{
+  canMsg1.data[4] = u32_1.u8[3];
+  canMsg1.data[5] = u32_1.u8[2];
+  canMsg1.data[6] = u32_1.u8[1];
+  canMsg1.data[7] = u32_1.u8[0];
+  u32_1.i32++;
+  mcp2515.sendMessage(&canMsg1);
+}
+
 void loop()
 {
-  String countStr = String(count);
-  count++;
-  String countStr2 = String(count);
-  for (int i = 0; i < 3 && i < countStr.length(); i++) // parse it as ASCII. only 3 bytes left in the canframe. problem when > 999
-  {
-    int iterator = 5 + i;
-    canMsg1.data[iterator] = countStr[i];
-  }
-
-  for (int i = 0; i < 3 && i < countStr2.length(); i++) // parse it as ASCII. only 3 bytes left in the canframe. problem when > 999
-  {
-    int iterator = 5 + i;
-    canMsg2.data[iterator] = countStr2[i];
-  }
-
-  mcp2515.sendMessage(&canMsg1);
-  mcp2515.sendMessage(&canMsg2);
-
-  Serial.println("Messages sent");
-  count++;
-
-  delay(100);
+  updateCanMsg();
+  updateCanMsg();
+  updateCanMsg();
+  updateCanMsg();
+  updateCanMsg();
+  
+  delay(10);
 }
