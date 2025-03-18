@@ -18,8 +18,6 @@ void TaskBlink2(void *pvParameters);
 void setup()
 {
   pinMode(LEDPIN3, OUTPUT);
-  // initialize serial communication at 9600 bits per second:
-  Serial.begin(9600);
   xTaskCreate(
       TaskBlink1, "task1", 128, NULL, 1, NULL);
 
@@ -42,7 +40,6 @@ void TaskBlink1(void *pvParameters)
   pinMode(LEDPIN1, OUTPUT);
   while (1)
   {
-    Serial.println("Task1");
     digitalWrite(LEDPIN1, HIGH);
     vTaskDelay(DELAY1 / portTICK_PERIOD_MS);
     digitalWrite(LEDPIN1, LOW);
@@ -55,7 +52,6 @@ void TaskBlink2(void *pvParameters)
   pinMode(LEDPIN2, OUTPUT);
   while (1)
   {
-    Serial.println("Task2");
     digitalWrite(LEDPIN2, HIGH);
     vTaskDelay(DELAY2 / portTICK_PERIOD_MS);
     digitalWrite(LEDPIN2, LOW);
