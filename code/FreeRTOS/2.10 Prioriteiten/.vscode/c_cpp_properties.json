@@ -8,9 +8,9 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "C:/Users/mikea/Documents/IoT-techniek_svn/code/FreeRTOS/2.9 vTaskDelay of delay/include",
-                "C:/Users/mikea/Documents/IoT-techniek_svn/code/FreeRTOS/2.9 vTaskDelay of delay/src",
-                "C:/Users/mikea/Documents/IoT-techniek_svn/code/FreeRTOS/2.9 vTaskDelay of delay/.pio/libdeps/uno/FreeRTOS/src",
+                "C:/Users/mikea/Documents/IoT-techniek_svn/code/FreeRTOS/2.10 Prioriteiten/include",
+                "C:/Users/mikea/Documents/IoT-techniek_svn/code/FreeRTOS/2.10 Prioriteiten/src",
+                "C:/Users/mikea/Documents/IoT-techniek_svn/code/FreeRTOS/2.10 Prioriteiten/.pio/libdeps/uno/FreeRTOS/src",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/variants/standard",
                 "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
@@ -23,9 +23,9 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/FreeRTOS/2.9 vTaskDelay of delay/include",
-                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/FreeRTOS/2.9 vTaskDelay of delay/src",
-                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/FreeRTOS/2.9 vTaskDelay of delay/.pio/libdeps/uno/FreeRTOS/src",
+                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/FreeRTOS/2.10 Prioriteiten/include",
+                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/FreeRTOS/2.10 Prioriteiten/src",
+                    "C:/Users/mikea/Documents/IoT-techniek_svn/code/FreeRTOS/2.10 Prioriteiten/.pio/libdeps/uno/FreeRTOS/src",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/variants/standard",
                     "C:/Users/mikea/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
