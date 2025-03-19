@@ -42,9 +42,9 @@ void TaskBlink1(void *pvParameters)
   while (1)
   {
     digitalWrite(LEDPIN1, HIGH);
-    vTaskDelay(DELAY1 / portTICK_PERIOD_MS);
+    delay(DELAY1 / portTICK_PERIOD_MS);
     digitalWrite(LEDPIN1, LOW);
-    vTaskDelay(DELAY1 / portTICK_PERIOD_MS);
+    delay(DELAY1 / portTICK_PERIOD_MS);
   }
 }
 
@@ -54,8 +54,8 @@ void TaskBlink2(void *pvParameters)
   while (1)
   {
     digitalWrite(LEDPIN2, HIGH);
-    vTaskDelay(DELAY2 / portTICK_PERIOD_MS);
+    delay(DELAY2 / portTICK_PERIOD_MS);
     digitalWrite(LEDPIN2, LOW);
-    vTaskDelay(DELAY2 / portTICK_PERIOD_MS);
+    delay(DELAY2 / portTICK_PERIOD_MS);
   }
 }
