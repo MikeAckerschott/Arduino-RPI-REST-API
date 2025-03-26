@@ -1,45 +1,54 @@
 #include "buffermock.h"
-#include <stdio.h>
 
-#include <string.h>
-
-#define MAX_LENGTH 200
-
-// input stream mock
-struct {
-  char text[MAX_LENGTH];
-  int length;
-  int current;
-} buffer;
-
-// input stream buffer mock implementation
-
-void reset_buffer(const char* text) {
-  buffer.length = 0;
-  for (;;) {
-    if (text[buffer.length] == '\0')
-      break;
-
-    buffer.length++;
-
-    if (buffer.length > MAX_LENGTH) {
-      printf("ERROR: input text too long\n");
-      break;
+bool init_buffer(CircularBuffer *buffer, int size) {
+    buffer->data = (int *)malloc(size * sizeof(int));
+    if (buffer->data == NULL) {
+        return false;
     }
-  }
-
-  strncpy(buffer.text, text, MAX_LENGTH - 1);
-  buffer.current = 0;
+    buffer->oldest = 0;
+    buffer->newest = -1;
+    buffer->size = size;
+    buffer->count = 0;
+    return true;
 }
 
-int available_buffer() {
-  return buffer.current < buffer.length;
+void insert_buffer(CircularBuffer *buffer, int value) {
+    if (buffer->count < buffer->size) {
+        buffer->newest = (buffer->newest + 1) % buffer->size;
+        buffer->data[buffer->newest] = value;
+        buffer->count++;
+    } else {
+        // Overwrite the oldest value
+        buffer->newest = (buffer->newest + 1) % buffer->size;
+        buffer->data[buffer->newest] = value;
+        buffer->oldest = (buffer->oldest + 1) % buffer->size;
+    }
 }
 
-char peek_buffer() { return buffer.text[buffer.current]; }
+bool resize_buffer(CircularBuffer *buffer, int new_size) {
+    int *new_array = (int *)malloc(new_size * sizeof(int));
+    if (new_array == NULL || new_size <= 0) {
+        return false;
+    }
 
-char read_buffer() {
-  char c = peek_buffer();
-  buffer.current++;
-  return c;
+    int copy_count = (buffer->count < new_size) ? buffer->count : new_size;
+    for (int i = 0; i < copy_count; i++) {
+        new_array[i] = buffer->data[(buffer->oldest + i) % buffer->size];
+    }
+
+    free(buffer->data);
+
+    buffer->data = new_array;
+    buffer->size = new_size;
+    buffer->oldest = 0;
+    buffer->newest = copy_count - 1;
+    buffer->count = copy_count;
+
+    return true;
+}
+
+void empty_buffer(CircularBuffer *buffer) {
+    buffer->oldest = 0;
+    buffer->newest = -1;
+    buffer->count = 0;
 }

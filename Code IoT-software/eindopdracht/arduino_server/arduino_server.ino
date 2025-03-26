@@ -1,7 +1,9 @@
 #include <Ethernet.h>
 
+
 extern "C" {
 #include "cserver.h"
+#include "buffermock.h"
   extern unsigned long previousMillisYellow;
 }
 
@@ -18,6 +20,9 @@ IPAddress ip(192, 168, 2, 3);
 EthernetServer server(80);
 EthernetClient httpClient;
 
+CircularBuffer buffer1;
+CircularBuffer buffer2;
+
 // make httpClient methods available as ordinary functions
 int clientAvailable() {
   return httpClient.connected() && httpClient.available();
@@ -33,6 +38,9 @@ void setup() {
   Serial.begin(9600);
   setupLeds();
   setupDistanceSensors();
+
+  init_buffer(&buffer1, 12);
+  init_buffer(&buffer2, 12);
 
   Ethernet.begin(mac, ip);
   server.begin();
@@ -67,4 +75,7 @@ void loop() {
   Serial.print(sensor1);
   Serial.print(" , ");
   Serial.println(sensor2);
+  insert_buffer(&buffer1, sensor1);
+  insert_buffer(&buffer2, sensor2);
+  
 }
