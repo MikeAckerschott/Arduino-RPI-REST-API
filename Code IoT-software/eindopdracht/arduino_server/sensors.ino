@@ -1,23 +1,27 @@
-#include "Adafruit_VL53L0X.h"
+#include <Wire.h>
+#include <VL53L0X.h>
 #include <HCSR04.h>
 
-Adafruit_VL53L0X lox = Adafruit_VL53L0X();
 
 byte triggerPin = 7;
 byte echoPin = 6;
+VL53L0X sensor;
 
 void setupDistanceSensors() {
-  if (!lox.begin()) {
-    Serial.println(F("Failed to boot VL53L0X"));
-    while (1)
-      ;
-  }
+
   HCSR04.begin(triggerPin, echoPin);
+  Wire.begin();
+
+  sensor.setTimeout(500);
+  if (!sensor.init()) {
+    Serial.println("Failed to detect and initialize sensor!");
+    while (1) {}
+  }
+  sensor.startContinuous();
 }
 
-void getDistances(int * distanceSensor1, int * distanceSensor2) {
-  VL53L0X_RangingMeasurementData_t measure;
-  lox.rangingTest(&measure, false);
-  *distanceSensor1 = measure.RangeMilliMeter;
-  *distanceSensor2 = HCSR04.measureDistanceCm();
+void getDistances(int* distanceSensor1, int* distanceSensor2) {
+  *distanceSensor1 = sensor.readRangeContinuousMillimeters();
+  double* distances = HCSR04.measureDistanceMm();
+  *distanceSensor2 = distances[0];
 }
