@@ -20,17 +20,6 @@ const short SENSORS_DELAY = 100;
 // TIMER FOR DISTANCE SENSORS
 unsigned long previousSensorReading = 0;
 
-// AVERAGES AND STANDARD DEVIATIONS
-unsigned long long totalReadings = 0;
-unsigned long long totalSensor1 = 0;
-unsigned long long totalSensor2 = 0;
-unsigned long long totalSquaredSensor1 = 0;
-unsigned long long totalSquaredSensor2 = 0;
-double averageSensor1 = 0;
-double averageSensor2 = 0;
-double stdDevSensor1 = 0;
-double stdDevSensor2 = 0;
-
 // unique MAC address, correct IP address!
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 IPAddress ip(192, 168, 2, 3);
@@ -92,43 +81,8 @@ void loop()
   }
 
   // READ SENSORS
-
   if (previousSensorReading + SENSORS_DELAY < millis())
   {
-    // READ SENSORS
-    int sensor1 = 0;
-    int sensor2 = 0;
-    getDistances(&sensor1, &sensor2);
-    Serial.print("sensors read: ");
-    Serial.print(sensor1);
-    Serial.print(" , ");
-    Serial.print(sensor2);
-
-    // INSERT INTO BUFFER
-    insert_buffer(&buffer1, sensor1);
-    insert_buffer(&buffer2, sensor2);
-
-    // UPDATE RUNNING MEAN AND STANDARD DEVIATION WITH Welford's algorithm
-    totalReadings++;
-    totalSensor1 += sensor1;
-    totalSensor2 += sensor2;
-    totalSquaredSensor1 += sensor1 * sensor1;
-    totalSquaredSensor2 += sensor2 * sensor2;
-    averageSensor1 = totalSensor1 / static_cast<double>(totalReadings);
-    averageSensor2 = totalSensor2 / static_cast<double>(totalReadings);
-
-    stdDevSensor1 = sqrt((totalSquaredSensor1 - totalSensor1 * totalSensor1 / totalReadings) / static_cast<double>(totalReadings -1));
-    stdDevSensor2 = sqrt((totalSquaredSensor2 - totalSensor2 * totalSensor2 / totalReadings) / static_cast<double>(totalReadings -1));
-
-    Serial.print(" | average1: ");
-    Serial.print(averageSensor1);
-    Serial.print(" | average2: ");
-    Serial.print(averageSensor2);
-    Serial.print(" | stdDev1: ");
-    Serial.print(stdDevSensor1);
-    Serial.print(" | stdDev2: ");
-    Serial.println(stdDevSensor2);
-
-    previousSensorReading = millis();
+    updateSensorData();
   }
 }
