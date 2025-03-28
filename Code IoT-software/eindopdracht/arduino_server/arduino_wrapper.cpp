@@ -21,6 +21,11 @@ extern "C"
         Serial.println(message);
     }
 
+    void printToSerialInt(const int message)
+    {
+        Serial.println(message);
+    }
+
     unsigned long getMillis()
     {
         return millis();

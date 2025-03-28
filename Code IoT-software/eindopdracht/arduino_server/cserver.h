@@ -3,6 +3,7 @@
 
 #include "stream.h"
 #include <stdbool.h> // ik denk dat deze hier overbodig is
+#include "buffermock.h"
 
 enum statuscode {
   INTERNAL_SERVER_ERROR_500, // failed to malloc cbuffers
@@ -27,7 +28,13 @@ struct response {
   };
 };
 
+CircularBuffer *buffer_1;
+CircularBuffer *buffer_2;
+
 struct response handleRequest(struct stream);
+
+void setBuffer1 (CircularBuffer * buffer1);
+void setBuffer2 (CircularBuffer * buffer2);
 
 
 #endif

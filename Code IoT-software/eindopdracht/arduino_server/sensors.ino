@@ -42,10 +42,10 @@ void updateSensorData(){
   int sensor1 = 0;
   int sensor2 = 0;
   getDistances(&sensor1, &sensor2);
-  Serial.print("sensors read: ");
-  Serial.print(sensor1);
-  Serial.print(" , ");
-  Serial.print(sensor2);
+  // Serial.print("sensors read: ");
+  // Serial.print(sensor1);
+  // Serial.print(" , ");
+  // Serial.print(sensor2);
 
   // INSERT INTO BUFFER
   insert_buffer(&buffer1, sensor1);
@@ -63,14 +63,14 @@ void updateSensorData(){
   stdDevSensor1 = sqrt((totalSquaredSensor1 - totalSensor1 * totalSensor1 / totalReadings) / static_cast<double>(totalReadings -1));
   stdDevSensor2 = sqrt((totalSquaredSensor2 - totalSensor2 * totalSensor2 / totalReadings) / static_cast<double>(totalReadings -1));
 
-  Serial.print(" | average1: ");
-  Serial.print(averageSensor1);
-  Serial.print(" | average2: ");
-  Serial.print(averageSensor2);
-  Serial.print(" | stdDev1: ");
-  Serial.print(stdDevSensor1);
-  Serial.print(" | stdDev2: ");
-  Serial.println(stdDevSensor2);
+  // Serial.print(" | average1: ");
+  // Serial.print(averageSensor1);
+  // Serial.print(" | average2: ");
+  // Serial.print(averageSensor2);
+  // Serial.print(" | stdDev1: ");
+  // Serial.print(stdDevSensor1);
+  // Serial.print(" | stdDev2: ");
+  // Serial.println(stdDevSensor2);
 
   previousSensorReading = millis();
 }

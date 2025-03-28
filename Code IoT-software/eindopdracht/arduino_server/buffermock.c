@@ -48,6 +48,9 @@ bool resize_buffer(CircularBuffer *buffer, int new_size) {
 }
 
 void empty_buffer(CircularBuffer *buffer) {
+    for(int i = 0; i < buffer->count; i++) {
+        buffer->data[(buffer->oldest + i) % buffer->size] = 0;
+    }
     buffer->oldest = 0;
     buffer->newest = -1;
     buffer->count = 0;
