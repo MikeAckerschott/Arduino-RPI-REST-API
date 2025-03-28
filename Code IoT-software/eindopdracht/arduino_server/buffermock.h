@@ -19,4 +19,6 @@ void insert_buffer(CircularBuffer *buffer, int value);
 bool resize_buffer(CircularBuffer *buffer, int new_size);
 void empty_buffer(CircularBuffer *buffer);
 
+double get_mean(CircularBuffer *buffer);
+
 #endif

@@ -18,6 +18,19 @@ byte triggerPin = 7;
 byte echoPin = 6;
 VL53L0X sensor;
 
+double getAverageSensor1() {
+  return averageSensor1;
+}
+double getAverageSensor2() {
+  return averageSensor2;
+}
+double getStdDevSensor1() {
+  return stdDevSensor1;
+}
+double getStdDevSensor2() {
+  return stdDevSensor2;
+}
+
 void setupDistanceSensors() {
 
   HCSR04.begin(triggerPin, echoPin);

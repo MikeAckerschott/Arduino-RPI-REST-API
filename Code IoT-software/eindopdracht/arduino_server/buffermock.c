@@ -55,3 +55,14 @@ void empty_buffer(CircularBuffer *buffer) {
     buffer->newest = -1;
     buffer->count = 0;
 }
+
+double get_mean(CircularBuffer *buffer) {
+    if (buffer->count == 0) {
+        return 0.0; // Avoid division by zero
+    }
+    double sum = 0.0;
+    for (int i = 0; i < buffer->count; i++) {
+        sum += buffer->data[(buffer->oldest + i) % buffer->size];
+    }
+    return ((int)(sum / buffer->count * 10)) / 10.0; // Round to one decimal
+}
