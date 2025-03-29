@@ -5,6 +5,10 @@ extern "C"
 #include "cserver.h"
 #include "buffermock.h"
   extern unsigned long previousMillisYellow;
+
+  // Wrapper for httpClient.print
+  void printToClient(const char *message);
+  void setClient(EthernetClient *client);
 }
 
 // CONSTANT FOR LEDS
@@ -19,9 +23,6 @@ const short SENSORS_DELAY = 100;
 
 // TIMER FOR DISTANCE SENSORS
 unsigned long previousSensorReading = 0;
-
-// BOOLEAN FOR ACTIVE AND PASSIVE MODE
-bool activeMode = false;
 
 // unique MAC address, correct IP address!
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
@@ -52,11 +53,7 @@ void setup()
   setupLeds();
   setupDistanceSensors();
 
-  init_buffer(&buffer1, 12);
-  init_buffer(&buffer2, 12);
-  // give cserver access to the buffers
-  setBuffer1(&buffer1);
-  setBuffer2(&buffer2);
+  init_cserver(&buffer1, &buffer2);
 
   Ethernet.begin(mac, ip);
   server.begin();

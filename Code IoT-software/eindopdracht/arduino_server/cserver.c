@@ -3,11 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "abnf.h"
 #include "arduino_wrapper.h"
-#include "request.h"
 
 extern void printToSerial(const char *message);
+extern void printToClient(const char *message);
 extern unsigned long getMillis();
 extern void setLed(int led, bool state);
 
@@ -40,15 +39,71 @@ struct AllowedCall
   void (*handler)(const char *body);
 };
 
+void init_cserver(CircularBuffer *buffer1, CircularBuffer *buffer2)
+{
+  init_buffer(buffer1, 12);
+  init_buffer(buffer2, 12);
+  buffer_1 = buffer1;
+  buffer_2 = buffer2;
+
+  totalReadings = 0;
+  totalSensor1 = 0;
+  totalSensor2 = 0;
+  totalSquaredSensor1 = 0;
+  totalSquaredSensor2 = 0;
+  averageSensor1 = 0.0;
+  averageSensor2 = 0.0;
+  stdDevSensor1 = 0.0;
+  stdDevSensor2 = 0.0;
+
+  activeMode = true;
+}
+
 void handlePutConfigMode(const char *body)
 {
   printToSerial("Handling PUT /config/mode");
-  // Add logic to handle this call
+  // Check if body is "active" or "passive"
+  if (strcmp(body, "active") == 0)
+  {
+    activeMode = true;
+  }
+  else if (strcmp(body, "passive") == 0)
+  {
+    activeMode = false;
+  }
+  else
+  {
+    printToClient("HTTP/1.1 400 Bad Request\r\n");
+    return;
+  }
+  printToClient("HTTP/1.1 200 OK\r\n");
 }
 
 void handlePutConfigCbuffsize(const char *body)
 {
   printToSerial("Handling PUT /config/cbuffsize");
+  // Check if body is a valid integer
+  int cbuffsize = atoi(body);
+  if (cbuffsize > 0)
+  {
+    // Set the buffer size
+    if(resize_buffer(buffer_1, cbuffsize) && resize_buffer(buffer_2, cbuffsize))
+    {
+      printToClient("HTTP/1.1 200 OK\r\n");
+      return;
+    }
+    else
+    {
+      printToClient("HTTP/1.1 500 Internal Server Error\r\n");
+      return;
+    }
+
+  }
+  else
+  {
+    printToClient("HTTP/1.1 400 Bad Request\r\n");
+    return;
+  }
   // Add logic to handle this call
 }
 
@@ -129,7 +184,7 @@ struct AllowedCall ALLOWED_CALLS[] =
 
 void handleRequest(struct stream stream)
 {
-  // response received from the client. yellow led on for 0.5 seconds
+  // Response received from the client. Yellow LED on for 0.5 seconds
   setLed(YELLOW, true);
   previousMillisYellow = getMillis();
 
@@ -142,25 +197,25 @@ void handleRequest(struct stream stream)
   }
   buffer[bufferIndex] = '\0';
 
-  // check for the line that contains Content-Length:
+  // Check for the line that contains Content-Length:
   char *contentLengthLine = strstr(buffer, "Content-Length:");
   int contentLength = 0;
   char *body = NULL;
   if (contentLengthLine != NULL)
   {
-    // get the content length value
+    // Get the content length value
     char *contentLengthValue = contentLengthLine + strlen("Content-Length: ");
     contentLength = atoi(contentLengthValue);
     printToSerialInt(contentLength);
 
-    // get the last line (body) method (first word) and target (second word)
+    // Get the last line (body)
     char *lastLine = strrchr(buffer, '\n');
     body = lastLine + 1;
     int bodyLength = strlen(body);
     printToSerial(body);
   }
 
-  // get the first line (PUT /config/mode HTTP/1.1) and remove the http version
+  // Get the first line (e.g., "PUT /config/mode HTTP/1.1") and remove the HTTP version
   char *firstLine = strtok(buffer, "\n");
   char *method = strtok(firstLine, " ");
   char *target = strtok(NULL, " ");
@@ -168,7 +223,7 @@ void handleRequest(struct stream stream)
   printToSerial(method);
   printToSerial(target);
 
-  // check if target is in ALLOWED_ENDPOINTS
+  // Check if target is in ALLOWED_ENDPOINTS
   bool targetAllowed = false;
   for (int i = 0; i < sizeof(ALLOWED_ENDPOINTS) / sizeof(ALLOWED_ENDPOINTS[0]); i++)
   {
@@ -181,20 +236,13 @@ void handleRequest(struct stream stream)
   }
   if (!targetAllowed)
   {
-    printToSerial("Target not allowed");
-    char *fullCall = (char *)malloc(strlen(method) + strlen(target) + 2); // +2 for space and null terminator
-  }
-
-  // check if method is in ALLOWED_CALLS
-  char *fullCall = (char *)malloc(strlen(method) + strlen(target) + 2); // +2 for space and null terminator
-  if (fullCall == NULL)
-  {
-    printToSerial("Memory allocation failed");
+    printToClient("HTTP/1.1 404 Not Found\r\n");
     return;
   }
-  strcpy(fullCall, method);
-  strcat(fullCall, " ");
-  strcat(fullCall, target);
+
+  // Check if method is in ALLOWED_CALLS
+  char fullCall[64]; // Statically allocate a buffer for the full call
+  snprintf(fullCall, sizeof(fullCall), "%s %s", method, target);
 
   bool methodAllowed = false;
   for (int iterator = 0; iterator < sizeof(ALLOWED_CALLS) / sizeof(ALLOWED_CALLS[0]); iterator++)
@@ -207,18 +255,15 @@ void handleRequest(struct stream stream)
       methodAllowed = true;
       // Call the corresponding handler function
       ALLOWED_CALLS[iterator].handler(body);
-      free(fullCall);
       return;
     }
   }
 
   if (!methodAllowed)
   {
-    printToSerial("Method not allowed");
+    printToClient("HTTP/1.1 400 Bad Request\r\n");
   }
-  free(fullCall);
 }
-
 void setBuffer1(CircularBuffer *buffer)
 {
   buffer_1 = buffer;

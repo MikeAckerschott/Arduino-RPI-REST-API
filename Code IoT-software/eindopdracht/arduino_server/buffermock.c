@@ -26,24 +26,22 @@ void insert_buffer(CircularBuffer *buffer, int value) {
 }
 
 bool resize_buffer(CircularBuffer *buffer, int new_size) {
-    int *new_array = (int *)malloc(new_size * sizeof(int));
-    if (new_array == NULL || new_size <= 0) {
-        return false;
+    if(new_size <= 0) {
+        return false; // Invalid size
+    }
+    int *new_data = (int *)malloc(new_size * sizeof(int));
+    int count = buffer->count < new_size ? buffer->count : new_size;
+    for (int i = 0; i < count; i++) {
+        new_data[i] = buffer->data[(buffer->oldest + i) % buffer->size];
     }
 
-    int copy_count = (buffer->count < new_size) ? buffer->count : new_size;
-    for (int i = 0; i < copy_count; i++) {
-        new_array[i] = buffer->data[(buffer->oldest + i) % buffer->size];
-    }
-
+    //free old data and assign new data
     free(buffer->data);
-
-    buffer->data = new_array;
-    buffer->size = new_size;
+    buffer->data = new_data;
     buffer->oldest = 0;
-    buffer->newest = copy_count - 1;
-    buffer->count = copy_count;
-
+    buffer->newest = count - 1;
+    buffer->size = new_size;
+    buffer->count = count;
     return true;
 }
 
