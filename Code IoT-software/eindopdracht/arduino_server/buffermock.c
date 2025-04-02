@@ -76,7 +76,7 @@ float get_mean(CircularBuffer* buffer) {
   printToSerial("GET MEAN: ");
   printToSerialInt(buffer->count);
   if (buffer->count == 0) {
-    return 0.0; // Avoid division by zero
+    return -1; // Avoid division by zero
   }
   float sum = 0.0;
   for (int i = 0; i < buffer->count; i++) {

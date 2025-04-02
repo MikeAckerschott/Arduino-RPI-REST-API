@@ -790,6 +790,7 @@ Content-Length: 3\r\n\
   response = requests_raw.raw(url=address(), data=req)
   assert response.status_code == 200
   if response.status_code == 200:
+    print(float(response.content.decode('ascii')))
     assert abs(float(response.content.decode('ascii')) - 373.8) <= 0.1
 
   req = "GET /sensors/1/actual HTTP/1.0\r\n\r\n"

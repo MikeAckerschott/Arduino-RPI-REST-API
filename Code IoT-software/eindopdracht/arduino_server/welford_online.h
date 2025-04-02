@@ -16,7 +16,8 @@ void update_aggregate(WelfordAggregate* aggregate,
 // sample variance
 int finalize_aggregate(WelfordAggregate* aggregate,
                        double* mean, double* variance,
-                       double* sample_variance);
+                       double* sample_variance,
+                       double* stddev);
 
 // reset the aggregate
 void reset_aggregate(WelfordAggregate* aggregate);

@@ -29,24 +29,29 @@ void update_aggregate(WelfordAggregate* aggregate,
 // aggregate
 int finalize_aggregate(WelfordAggregate* aggregate,
                        double* mean, double* variance,
-                       double* sample_variance) {
-  if (aggregate->count < 2) {
-    return 0; // Not enough data points
-    printToSerial("NOT ENOUGH DATAPOINTS!");
-  } else {
-    printToSerial("FINALIZE: ");
-    printToSerialInt(aggregate->count);
-    printToSerialFloat(aggregate->mean);
-    printToSerialFloat(aggregate->M2);
+                       double* sample_variance,
+                       double* stddev) {
 
-    *mean = aggregate->mean;
-    *variance = aggregate->M2 / aggregate->count;
-    *sample_variance =
-        aggregate->M2 / (aggregate->count - 1);
-    printToSerialFloat(*variance);
-    printToSerial("");
-    return 1; // Success
+  if (aggregate->count == 0) {
+    *mean = -1;
+    *variance = -1;
+    *sample_variance = -1;
+    *stddev = -1;
+    return 0;
   }
+
+  *mean = aggregate->mean;
+  *variance = aggregate->M2 / aggregate->count;
+
+  if (aggregate->count == 1) {
+    *sample_variance = 0;
+    *stddev = 0;
+    return 0;
+  }
+
+  *sample_variance = aggregate->M2 / (aggregate->count - 1);
+  *stddev = sqrt(*variance);
+  return 1; // Success
 }
 
 void reset_aggregate(WelfordAggregate* aggregate) {

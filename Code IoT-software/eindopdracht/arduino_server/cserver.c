@@ -164,10 +164,18 @@ void handlePostSensors2(const char* body) {
 
 void handleGetSensors1Avg(const char* body) {
   // printToSerial("Handling GET /sensors/1/avg");
-  char averageBuffer1Str[16]; // Allocate a buffer for the
-                              // float-to-string conversion
+  char averageBuffer1Str[16] = {
+      0}; // Allocate a buffer for the
+  // float-to-string conversion
 
-  dtostrf(aggregate1.mean, 1, 1, averageBuffer1Str);
+  double mean = 0;
+  double variance = 0;
+  double sample_variance = 0;
+  double stddev = 0;
+  finalize_aggregate(&aggregate1, &mean, &variance,
+                     &sample_variance, &stddev);
+
+  dtostrf(mean, 1, 1, averageBuffer1Str);
   int contentLength = strlen(averageBuffer1Str);
 
   printToClient(HTTP_OK_BODY);
@@ -179,9 +187,16 @@ void handleGetSensors1Avg(const char* body) {
 
 void handleGetSensors2Avg(const char* body) {
   // printToSerial("Handling GET /sensors/2/avg");
-  char averageBuffer2Str[16]; // Allocate a buffer for the
-                              // float-to-string conversion
-  dtostrf(aggregate2.mean, 1, 1, averageBuffer2Str);
+  char averageBuffer2Str[16] = {
+      0}; // Allocate a buffer for the
+  // float-to-string conversion
+  double mean = 0;
+  double variance = 0;
+  double sample_variance = 0;
+  double stddev = 0;
+  finalize_aggregate(&aggregate2, &mean, &variance,
+                     &sample_variance, &stddev);
+  dtostrf(mean, 1, 1, averageBuffer2Str);
   int contentLength = strlen(averageBuffer2Str);
 
   printToClient(HTTP_OK_BODY);
@@ -193,14 +208,15 @@ void handleGetSensors2Avg(const char* body) {
 
 void handleGetSensors1Stdev(const char* body) {
   // printToSerial("Handling GET /sensors/1/stdev");
-  char stdDevSensor1Str[16]; // Allocate a buffer for the
-                             // float-to-string conversion
+  char stdDevSensor1Str[16] = {
+      0}; // Allocate a buffer for the
+          // float-to-string conversion
   double mean = 0;
   double variance = 0;
   double sample_variance = 0;
+  double stddev = 0;
   finalize_aggregate(&aggregate1, &mean, &variance,
-                     &sample_variance);
-  double stddev = sqrt(variance);
+                     &sample_variance, &stddev);
   printToSerial("stddev: ");
   printToSerialFloat(stddev);
   printToSerial("variance: ");
@@ -216,14 +232,15 @@ void handleGetSensors1Stdev(const char* body) {
 
 void handleGetSensors2Stdev(const char* body) {
   // printToSerial("Handling GET /sensors/2/stdev");
-  char stdDevSensor2Str[16]; // Allocate a buffer for the
+  char stdDevSensor2Str[16] = {
+      0}; // Allocate a buffer for the
 
   double mean = 0;
   double variance = 0;
   double sample_variance = 0;
+  double stddev = 0;
   finalize_aggregate(&aggregate2, &mean, &variance,
-                     &sample_variance);
-  double stddev = sqrt(variance);
+                     &sample_variance, &stddev);
   printToSerial("stddev: ");
   printToSerialFloat(stddev);
   printToSerial("variance: ");
@@ -245,10 +262,13 @@ void handleGetSensors1Actual(const char* body) {
   printToSerial("");
 
   // Prepare the response body
-  char averageBuffer1Str[16]; // Allocate a buffer for the
-                              // float-to-string conversion
+  char averageBuffer1Str[16] = {0};
+  // float-to-string conversion
   dtostrf(averageBuffer1, 1, 1, averageBuffer1Str);
   int contentLength = strlen(averageBuffer1Str);
+
+  // empty the buffer
+  empty_buffer(buffer_1);
 
   printToClient(HTTP_OK_BODY);
   printToClientInt(contentLength);
@@ -262,10 +282,14 @@ void handleGetSensors2Actual(const char* body) {
   float averageBuffer2 = get_mean(buffer_2);
 
   // Prepare the response body
-  char averageBuffer2Str[16]; // Allocate a buffer for the
-                              // float-to-string conversion
+  char averageBuffer2Str[16] = {
+      0}; // Allocate a buffer for the
+          // float-to-string conversion
   dtostrf(averageBuffer2, 1, 1, averageBuffer2Str);
   int contentLength = strlen(averageBuffer2Str);
+
+  // empty the buffer and aggregate
+  empty_buffer(buffer_1);
 
   printToClient(HTTP_OK_BODY);
   printToClientInt(contentLength);
@@ -346,8 +370,8 @@ void handleRequest(struct stream stream) {
   }
 
   // Check if method is in ALLOWED_CALLS
-  char fullCall[64]; // Statically allocate a buffer for the
-                     // full call
+  char fullCall[64] = {0}; // Statically allocate a buffer
+                           // for the full call
   snprintf(fullCall, sizeof(fullCall), "%s %s", method,
            target);
 
