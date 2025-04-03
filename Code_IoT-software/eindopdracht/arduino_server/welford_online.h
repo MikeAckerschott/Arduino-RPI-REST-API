@@ -1,6 +1,8 @@
 #ifndef WELFORD_ONLINE_H
 #define WELFORD_ONLINE_H
 
+#include <math.h>
+
 // Define the WelfordAggregate structure
 typedef struct {
   int count;   // Number of samples

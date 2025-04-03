@@ -1,4 +1,3 @@
-// filepath: c:\Users\mikea\Documents\IoT-techniek_svn\Code IoT-software\eindopdracht\arduino_server\serial_wrapper.cpp
 #include <Arduino.h>
 #include <Ethernet.h>
 #include "arduino_wrapper.h"
@@ -8,7 +7,6 @@ const int YELLOW = 4;
 const int RED1 = 9;
 const int RED2 = 8;
 
-// Declare httpClient as extern
 extern EthernetClient httpClient;
 
 extern "C"
@@ -23,21 +21,6 @@ extern "C"
         digitalWrite(led, state);
     }
 
-    void printToSerial(const char *message)
-    {
-        Serial.println(message);
-    }
-
-    void printToSerialInt(const int message)
-    {
-        Serial.println(message);
-    }
-
-    void printToSerialFloat(const float message)
-    {
-        Serial.println(message);
-    }
-
     unsigned long getMillis()
     {
         return millis();
@@ -45,22 +28,6 @@ extern "C"
 
     // Wrapper for httpClient.print
     void printToClient(const char *message)
-    {
-        if (httpClient)
-        {
-            if (httpClient.connected())
-            {
-                httpClient.print(message);
-            }
-            else
-            {
-                Serial.println("Client not connected");
-            }
-        }
-    }
-
-        // Wrapper for httpClient.print
-    void printToClientFloat(const float message)
     {
         if (httpClient)
         {

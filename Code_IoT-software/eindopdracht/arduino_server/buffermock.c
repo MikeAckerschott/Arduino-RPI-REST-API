@@ -2,9 +2,6 @@
 
 extern void setLed(int led, bool state,
                    bool allocationFailure);
-extern void printToSerial(const char* message);
-extern void printToSerialInt(const int message);
-extern void printToSerialFloat(const float message);
 
 bool init_buffer(CircularBuffer* buffer, int size) {
   buffer->data = (int*)malloc(size * sizeof(int));
@@ -73,8 +70,6 @@ void empty_buffer(CircularBuffer* buffer) {
 }
 
 float get_mean(CircularBuffer* buffer) {
-  printToSerial("GET MEAN: ");
-  printToSerialInt(buffer->count);
   if (buffer->count == 0) {
     return -1; // Avoid division by zero
   }
@@ -83,14 +78,6 @@ float get_mean(CircularBuffer* buffer) {
     sum +=
         buffer->data[(buffer->oldest + i) % buffer->size];
   }
-  printToSerialFloat(sum);
   return ((int)(sum / buffer->count * 10)) /
          10.0; // Round to one decimal
-}
-
-bool is_buffer_empty(CircularBuffer* buffer) {
-  return buffer->count == 0;
-}
-bool is_buffer_full(CircularBuffer* buffer) {
-  return buffer->count == buffer->size;
 }

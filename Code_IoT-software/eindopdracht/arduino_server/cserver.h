@@ -23,7 +23,4 @@ void init_cserver(CircularBuffer* buffer1,
 
 void handleRequest(struct stream);
 
-void setBuffer1(CircularBuffer* buffer1);
-void setBuffer2(CircularBuffer* buffer2);
-
 #endif

@@ -5,10 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern void printToSerial(const char* message);
-extern void printToSerialInt(const int message);
-extern void printToSerialFloat(const float message);
 extern void printToClient(const char* message);
+extern void printToClientInt(const int message);
 extern unsigned long getMillis();
 extern void setLed(int led, bool state,
                    bool allocationFailure);
@@ -66,13 +64,10 @@ void init_cserver(CircularBuffer* buffer1,
 }
 
 void handlePutConfigMode(const char* body) {
-  // printToSerial("Handling PUT /config/mode");
   //  Check if body is "active" or "passive"
   if (strcmp(body, "active") == 0) {
     activeMode = true;
-    // printToSerial("Setting mode to active");
   } else if (strcmp(body, "passive") == 0) {
-    // printToSerial("Setting mode to passive");
     activeMode = false;
   } else {
     printToClient(HTTP_BAD_REQUEST);
@@ -82,7 +77,6 @@ void handlePutConfigMode(const char* body) {
 }
 
 void handlePutConfigCbuffsize(const char* body) {
-  // printToSerial("Handling PUT /config/cbuffsize");
   //  Check if body is a valid integer
   int cbuffsize = atoi(body);
   if (cbuffsize > 0) {
@@ -105,7 +99,6 @@ void handlePutConfigCbuffsize(const char* body) {
 }
 
 void handleDeleteSensors1(const char* body) {
-  // printToSerial("Handling DELETE /sensors/1");
   empty_buffer(buffer_1);
   reset_aggregate(&aggregate1);
 
@@ -113,7 +106,6 @@ void handleDeleteSensors1(const char* body) {
 }
 
 void handleDeleteSensors2(const char* body) {
-  // printToSerial("Handling DELETE /sensors/2");
   empty_buffer(buffer_2);
   reset_aggregate(&aggregate2);
 
@@ -121,18 +113,13 @@ void handleDeleteSensors2(const char* body) {
 }
 
 void handlePostSensors1(const char* body) {
-  // printToSerial("Handling POST /sensors/1");
   int num;
   char extra;
 
   // Check if body is a valid integer
   if (sscanf(body, "%d%c", &num, &extra) != 1) {
-    printToSerial("Invalid input\n");
     printToClient(HTTP_BAD_REQUEST);
   } else {
-    printToSerial("Valid input");
-    printToSerialInt(num);
-    printToSerial("");
 
     update_aggregate(&aggregate1, num);
     insert_buffer(buffer_1, num);
@@ -142,18 +129,13 @@ void handlePostSensors1(const char* body) {
 }
 
 void handlePostSensors2(const char* body) {
-  // printToSerial("Handling POST /sensors/2");
   int num;
   char extra;
 
   // Check if body is a valid integer
   if (sscanf(body, "%d%c", &num, &extra) != 1) {
-    printToSerial("Invalid input\n");
     printToClient(HTTP_BAD_REQUEST);
   } else {
-    printToSerial("Valid input");
-    printToSerialInt(num);
-    printToSerial("");
 
     update_aggregate(&aggregate2, num);
     insert_buffer(buffer_2, num);
@@ -163,7 +145,6 @@ void handlePostSensors2(const char* body) {
 }
 
 void handleGetSensors1Avg(const char* body) {
-  // printToSerial("Handling GET /sensors/1/avg");
   char averageBuffer1Str[16] = {
       0}; // Allocate a buffer for the
   // float-to-string conversion
@@ -182,11 +163,9 @@ void handleGetSensors1Avg(const char* body) {
   printToClientInt(contentLength);
   printToClient("\r\n\r\n");
   printToClient(averageBuffer1Str);
-  printToSerial(averageBuffer1Str);
 }
 
 void handleGetSensors2Avg(const char* body) {
-  // printToSerial("Handling GET /sensors/2/avg");
   char averageBuffer2Str[16] = {
       0}; // Allocate a buffer for the
   // float-to-string conversion
@@ -203,11 +182,9 @@ void handleGetSensors2Avg(const char* body) {
   printToClientInt(contentLength);
   printToClient("\r\n\r\n");
   printToClient(averageBuffer2Str);
-  printToSerial(averageBuffer2Str);
 }
 
 void handleGetSensors1Stdev(const char* body) {
-  // printToSerial("Handling GET /sensors/1/stdev");
   char stdDevSensor1Str[16] = {
       0}; // Allocate a buffer for the
           // float-to-string conversion
@@ -217,10 +194,6 @@ void handleGetSensors1Stdev(const char* body) {
   double stddev = 0;
   finalize_aggregate(&aggregate1, &mean, &variance,
                      &sample_variance, &stddev);
-  printToSerial("stddev: ");
-  printToSerialFloat(stddev);
-  printToSerial("variance: ");
-  printToSerialFloat(variance);
   dtostrf(stddev, 1, 1, stdDevSensor1Str);
   int contentLength = strlen(stdDevSensor1Str);
 
@@ -231,7 +204,6 @@ void handleGetSensors1Stdev(const char* body) {
 }
 
 void handleGetSensors2Stdev(const char* body) {
-  // printToSerial("Handling GET /sensors/2/stdev");
   char stdDevSensor2Str[16] = {
       0}; // Allocate a buffer for the
 
@@ -241,10 +213,6 @@ void handleGetSensors2Stdev(const char* body) {
   double stddev = 0;
   finalize_aggregate(&aggregate2, &mean, &variance,
                      &sample_variance, &stddev);
-  printToSerial("stddev: ");
-  printToSerialFloat(stddev);
-  printToSerial("variance: ");
-  printToSerialFloat(variance);
   dtostrf(stddev, 1, 1, stdDevSensor2Str);
   int contentLength = strlen(stdDevSensor2Str);
 
@@ -255,11 +223,8 @@ void handleGetSensors2Stdev(const char* body) {
 }
 
 void handleGetSensors1Actual(const char* body) {
-  // printToSerial("Handling GET /sensors/2/actual");
   //  Add logic to handle this call
   float averageBuffer1 = get_mean(buffer_1);
-  printToSerialFloat(averageBuffer1);
-  printToSerial("");
 
   // Prepare the response body
   char averageBuffer1Str[16] = {0};
@@ -277,7 +242,6 @@ void handleGetSensors1Actual(const char* body) {
 }
 
 void handleGetSensors2Actual(const char* body) {
-  // printToSerial("Handling GET /sensors/2/actual");
   //  Add logic to handle this call
   float averageBuffer2 = get_mean(buffer_2);
 
@@ -334,18 +298,11 @@ void handleRequest(struct stream stream) {
   // Check for the line that contains Content-Length:
   char* contentLengthLine =
       strstr(buffer, "Content-Length:");
-  int contentLength = 0;
   char* body = NULL;
   if (contentLengthLine != NULL) {
-    // Get the content length value
-    char* contentLengthValue =
-        contentLengthLine + strlen("Content-Length: ");
-    contentLength = atoi(contentLengthValue);
-
     // Get the last line (body)
     char* lastLine = strrchr(buffer, '\n');
     body = lastLine + 1;
-    int bodyLength = strlen(body);
   }
 
   // Get the first line (e.g., "PUT /config/mode HTTP/1.1")
@@ -375,27 +332,17 @@ void handleRequest(struct stream stream) {
   snprintf(fullCall, sizeof(fullCall), "%s %s", method,
            target);
 
-  bool methodAllowed = false;
   for (int iterator = 0;
        iterator <
        sizeof(ALLOWED_CALLS) / sizeof(ALLOWED_CALLS[0]);
        iterator++) {
     if (strcmp(fullCall, ALLOWED_CALLS[iterator].call) ==
         0) {
-      methodAllowed = true;
       // Call the corresponding handler function
       ALLOWED_CALLS[iterator].handler(body);
       return;
     }
   }
 
-  if (!methodAllowed) {
-    printToClient(HTTP_BAD_REQUEST);
-  }
-}
-void setBuffer1(CircularBuffer* buffer) {
-  buffer_1 = buffer;
-}
-void setBuffer2(CircularBuffer* buffer) {
-  buffer_2 = buffer;
+  printToClient(HTTP_BAD_REQUEST);
 }

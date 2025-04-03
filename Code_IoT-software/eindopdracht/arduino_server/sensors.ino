@@ -1,5 +1,3 @@
-void setupDistanceSensors() {}
-
 void getDistances(int* distanceSensor1,
                   int* distanceSensor2) {
   *distanceSensor1 = analogRead(A0);
