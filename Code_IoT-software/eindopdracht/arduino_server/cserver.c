@@ -327,8 +327,7 @@ void handleRequest(struct stream stream) {
   }
 
   // Check if method is in ALLOWED_CALLS
-  char fullCall[64] = {0}; // Statically allocate a buffer
-                           // for the full call
+  char fullCall[64] = {0};
   snprintf(fullCall, sizeof(fullCall), "%s %s", method,
            target);
 
@@ -343,6 +342,5 @@ void handleRequest(struct stream stream) {
       return;
     }
   }
-
   printToClient(HTTP_BAD_REQUEST);
 }

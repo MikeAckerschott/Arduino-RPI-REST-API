@@ -98,8 +98,6 @@ void loop() {
 void onInterrupt() {
   // reset langdurige gemiddeldes, leeg buffer en zet op
   // lengte 12
-  resize_buffer(&buffer1, 12);
-  resize_buffer(&buffer2, 12);
   if (!resize_buffer(&buffer1, 12) ||
       !resize_buffer(&buffer2, 12)) {
     allocationFailure = true;
