@@ -26,6 +26,11 @@ extern "C"
         return millis();
     }
 
+    void printToSerial(const char *message)
+    {
+        Serial.println(message);
+    }
+
     // Wrapper for httpClient.print
     void printToClient(const char *message)
     {

@@ -26,6 +26,7 @@ const char* HTTP_OK_BODY =
 const char* HTTP_OK_CHANGE = "HTTP/1.1 201 Created\r\n";
 const char* HTTP_BAD_REQUEST =
     "HTTP/1.1 400 Bad Request\r\n";
+const char* HTTP_NOT_FOUND = "HTTP/1.1 404 Not Found\r\n";
 
 const char* ALLOWED_ENDPOINTS[] = {"/config/mode",
                                    "/config/cbuffsize",
@@ -286,50 +287,40 @@ void handleRequest(struct stream stream) {
   setLed(YELLOW, true, allocationFailure);
   previousMillisYellow = getMillis();
 
-  char buffer[256] = {0};
-  int bufferIndex = 0;
+  http_message(stream);
 
-  while (stream.available() > 0 &&
-         bufferIndex < sizeof(buffer) - 1) {
-    buffer[bufferIndex++] = stream.read();
-  }
-  buffer[bufferIndex] = '\0';
+  printToSerial("REQUEST   :");
+  printToSerial(request_method);
+  printToSerial(request_endpoint);
+  printToSerial(request_body);
 
-  // Check for the line that contains Content-Length:
-  char* contentLengthLine =
-      strstr(buffer, "Content-Length:");
-  char* body = NULL;
-  if (contentLengthLine != NULL) {
-    // Get the last line (body)
-    char* lastLine = strrchr(buffer, '\n');
-    body = lastLine + 1;
-  }
+  bool endpointFound = false;
 
-  // Get the first line (e.g., "PUT /config/mode HTTP/1.1")
-  // and remove the HTTP version
-  char* firstLine = strtok(buffer, "\n");
-  char* method = strtok(firstLine, " ");
-  char* target = strtok(NULL, " ");
-
-  // Check if target is in ALLOWED_ENDPOINTS
-  bool targetAllowed = false;
-  for (int i = 0; i < sizeof(ALLOWED_ENDPOINTS) /
-                          sizeof(ALLOWED_ENDPOINTS[0]);
-       i++) {
-    if (strcmp(target, ALLOWED_ENDPOINTS[i]) == 0) {
-      targetAllowed = true;
+  // check for 404 not found
+  for (int iterator = 0;
+       iterator < sizeof(ALLOWED_ENDPOINTS) /
+                      sizeof(ALLOWED_ENDPOINTS[0]);
+       iterator++) {
+    if (strcmp(request_endpoint,
+               ALLOWED_ENDPOINTS[iterator]) == 0) {
+      endpointFound = true;
       break;
     }
   }
-  if (!targetAllowed) {
-    printToClient("HTTP/1.1 404 Not Found\r\n");
+
+  if (!endpointFound) {
+    printToSerial("ENDPOINT NOT FOUND");
+    printToClient(HTTP_NOT_FOUND);
     return;
   }
 
-  // Check if method is in ALLOWED_CALLS
-  char fullCall[64] = {0};
-  snprintf(fullCall, sizeof(fullCall), "%s %s", method,
-           target);
+  char fullCall[50] = {0};
+
+  snprintf(fullCall, sizeof(fullCall), "%s %s",
+           request_method, request_endpoint);
+
+  printToSerial("FULL CALL :");
+  printToSerial(fullCall);
 
   for (int iterator = 0;
        iterator <
@@ -338,9 +329,10 @@ void handleRequest(struct stream stream) {
     if (strcmp(fullCall, ALLOWED_CALLS[iterator].call) ==
         0) {
       // Call the corresponding handler function
-      ALLOWED_CALLS[iterator].handler(body);
+      ALLOWED_CALLS[iterator].handler(request_body);
       return;
     }
   }
+  printToSerial("CALL NOT FOUND");
   printToClient(HTTP_BAD_REQUEST);
 }
