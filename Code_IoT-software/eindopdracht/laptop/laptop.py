@@ -10,9 +10,9 @@ RPI_HTTP = "192.168.2.2:5000"
 def set_arduino_mode(mode):
     try:
         content_length = len(mode)
-        req = f"PUT /config/mode HTTP/1.0\r\n\
-        Content-Length: {content_length}\r\n\
-        \r\n{mode}"
+        req = f"PUT /config/mode HTTP/1.0\r\n\Content-Length: {content_length}\r\n\r\n{mode}"
+        
+        print(req)
     
         response = requests_raw.raw(f"http://{ARDUINO_HTTP}", data=req)
         print(f"Arduino response: {response}")
