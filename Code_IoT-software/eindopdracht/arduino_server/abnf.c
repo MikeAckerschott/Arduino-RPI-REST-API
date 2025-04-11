@@ -6,8 +6,6 @@
 #include <string.h>
 
 static bool field_line(struct stream);
-static bool field_name(struct stream);
-static bool field_value(struct stream);
 static bool http_token(struct stream);
 static bool http_version(struct stream);
 static bool message_body(struct stream);
@@ -73,23 +71,6 @@ static bool field_line(struct stream stream) {
   }
 
   if (peekToken(stream).type == CRLF) {
-    return true;
-  }
-
-  return false;
-}
-
-static bool field_name(struct stream stream) {
-  char result[256] = {0};
-  return tchar(stream, result, sizeof(result));
-}
-
-static bool field_value(struct stream stream) {
-  struct token next = peekToken(stream);
-
-  if (next.type == VCHAR || next.type == SP ||
-      next.type == HTAB) {
-    readToken(stream);
     return true;
   }
 

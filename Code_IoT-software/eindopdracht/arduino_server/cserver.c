@@ -7,6 +7,7 @@
 
 extern void printToClient(const char* message);
 extern void printToClientInt(const int message);
+extern void printToSerial(const char* message);
 extern unsigned long getMillis();
 extern void setLed(int led, bool state,
                    bool allocationFailure);
