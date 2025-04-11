@@ -57,18 +57,11 @@ void loop() {
 
   // read digital pin 3
   //  Serial.println(digitalRead(interruptPin));
-  if (allocationFailure) {
-    digitalWrite(GREEN, HIGH);
-    digitalWrite(YELLOW, HIGH);
-    digitalWrite(RED1, HIGH);
-    digitalWrite(RED2, HIGH);
-  }
 
   httpClient = server.available();
   if (httpClient) {
 
-    struct stream stream = {clientAvailable, clientPeek,
-                            clientRead};
+    struct stream stream = {clientAvailable, clientPeek,                            clientRead};
 
     handleRequest(stream);
 
@@ -92,6 +85,25 @@ void loop() {
       activeMode) {
     updateSensorData();
     previousSensorReading = millis();
+  }
+
+  if(buffer1.count == buffer1.size) {
+    digitalWrite(RED1, HIGH);
+  } else {
+    digitalWrite(RED1, LOW);
+  }
+  if(buffer2.count == buffer2.size) {
+    digitalWrite(RED2, HIGH);
+  } else {
+    digitalWrite(RED2, LOW);
+  }
+
+  // once allocation failure occurs, all LEDs constantly on
+  if (allocationFailure) {
+    digitalWrite(GREEN, HIGH);
+    digitalWrite(YELLOW, HIGH);
+    digitalWrite(RED1, HIGH);
+    digitalWrite(RED2, HIGH);
   }
 }
 
