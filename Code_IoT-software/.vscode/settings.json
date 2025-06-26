@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "request.h": "c",
-        "abnf.h": "c"
-    }
-}
